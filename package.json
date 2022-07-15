@@ -12,7 +12,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "csv": "^6.2.0"
+    "csv": "^6.2.0",
+    "got": "^12.1.0"
   },
   "devDependencies": {
     "eslint": "^8.19.0",
