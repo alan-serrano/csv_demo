@@ -41,7 +41,7 @@ Optional Goals:
 - The onRead callback traverses each cell, we assume that all cells have the same type. It is better to create a more general function that traverses all rows and not cells.
 - beforeRead and afterRead callbacks, can have better options, such as csv results, elapsed time, etc.
 
-# Libraries used
+# Dependencies
 
 - `csv` - Makes csv stream manipulation easy with its parser.
 - `got` - This library is used to get csv streams from a url. In this way, the csv is obtained either from a path or from a url.
