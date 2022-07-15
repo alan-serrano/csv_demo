@@ -1,5 +1,7 @@
 import { parse } from "csv";
 import fs from "fs";
+import got from "got";
+import { isValidHttpUrl } from "./isValidHttpUrl.js";
 
 /**@type {import('./csvTransform.types').csvTransform} */
 export function csvTransform({
@@ -8,15 +10,15 @@ export function csvTransform({
   beforeRead = () => {},
   afterRead = () => {},
 }) {
-  return new Promise((resolve, reject) => {
+  const timeStamp = new Date().getTime();
+  console.time(`csvTransform ${timeStamp}`);
+  return new Promise(async (resolve, reject) => {
     let result = [];
     beforeRead({ path });
-    console.time(`csvTransform`);
     let counter = 0;
 
-    const csvReader = fs
-      .createReadStream(path)
-      .pipe(parse({ delimiter: ",", from_line: 1 }));
+    const csvStream = await getFileStream(path);
+    const csvReader = csvStream.pipe(parse({ delimiter: ",", from_line: 1 }));
 
     csvReader.on("data", (row) => {
       counter++;
@@ -31,7 +33,7 @@ export function csvTransform({
 
     csvReader.on("end", () => {
       resolve(result);
-      console.timeEnd(`csvTransform`);
+      console.timeEnd(`csvTransform ${timeStamp}`);
       afterRead(result);
     });
 
@@ -39,4 +41,12 @@ export function csvTransform({
       reject(error);
     });
   });
+}
+
+async function getFileStream(path) {
+  if (isValidHttpUrl(path)) {
+    return got.stream(path);
+  } else {
+    return fs.createReadStream(path);
+  }
 }
