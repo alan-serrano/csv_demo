@@ -5,9 +5,10 @@
 
 /**
  * @typedef {Object} param0
+ * @property {string} path
  * @property {onRead} onRead
- * @property {function} beforeRead This function is executed before csv is processed
- * @property {function} afterRead This function is executed after the csv was processed
+ * @property {function} [beforeRead] This function is executed before csv is processed
+ * @property {function} [afterRead] This function is executed after the csv was processed
  */
 /**
  * @callback csvTransform
